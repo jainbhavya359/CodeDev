@@ -23,12 +23,16 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    isPro: {
+        type: Boolean,
+        default: false
+    },
     forgetPasswordToken: String,
     forgetPasswordTokenExpiry: Date,
     verifyToken: String,
     verifyTokenExpiry: Date
 })
 
-const User = mongoose.models.users || mongoose.model("users", userSchema)
+const User = mongoose.models.User || mongoose.model("User", userSchema)
 
 export default User;
