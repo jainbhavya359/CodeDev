@@ -1,29 +1,31 @@
 'use client'
 
-import React, { useEffect } from 'react'
+import React, { use, useEffect, useState } from 'react'
 import User from '@/models/userModel'
 import Link from "next/link";
 import { Blocks, Code2, Sparkles } from "lucide-react";
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import ThemeSelector from './ThemeSelector';
+import LanguageSelector from './LanguageSelector';
+import RunButton from './RunButton';
+import { useUserStore } from '@/store/useCodeEditorStore';
 
-export default async function Header() {
-    let user:any = null;
-
-    const getUserDetails = async () => {
-        try {
-            const res = await axios.get('/api/user/me')
-            console.log(res.data);
-            user = res.data.data;
-        } catch (error:any) {
-            console.log(error.message);
-            toast.error(error.message);
-        }
-    }
+export default function Header() {
+    const [ user, setUser ] = useState<any>(null);
+    const { userId, setUserId } = useUserStore();
 
     useEffect(()=>{
-        getUserDetails();
+        axios.get('/api/user/me')
+        .then(res =>{
+          setUser(res.data.data);
+        })
     },[]);
+
+    useEffect(()=>{
+      setUserId(user?._id);
+      console.log(userId)
+    },[user,userId]);
 
   return (
     <div className="relative z-10">
@@ -82,8 +84,8 @@ export default async function Header() {
 
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-3">
-            ThemeSelector 
-            LanguageSelector
+            <ThemeSelector />
+            <LanguageSelector hasAccess={Boolean(user?.isPro)}/>
           </div>
 
           {!user?.isPro && (
@@ -100,22 +102,22 @@ export default async function Header() {
             </Link>
           )}
 
-            <Link
-                href="/signup"
-                className="relative group flex items-center gap-2 px-4 py-1.5 rounded-lg text-gray-300 bg-gray-800/50 
-                    hover:bg-blue-500/10 border border-gray-800 hover:border-blue-500/50 transition-all duration-300 shadow-lg overflow-hidden"
-                >
-                Sign Up
-            </Link>
+            <RunButton />
 
           <div className="pl-3 border-l border-gray-800">
-             <Link
+             {user ? <Link
               href="/profile"
               className="relative group flex items-center gap-2 px-4 py-1.5 rounded-lg text-gray-300 bg-gray-800/50 
                 hover:bg-blue-500/10 border border-gray-800 hover:border-blue-500/50 transition-all duration-300 shadow-lg overflow-hidden"
             >
               ProfileBtn
-            </Link>
+            </Link> : <Link
+                href="/signup"
+                className="relative group flex items-center gap-2 px-4 py-1.5 rounded-lg text-gray-300 bg-gray-800/50 
+                    hover:bg-blue-500/10 border border-gray-800 hover:border-blue-500/50 transition-all duration-300 shadow-lg overflow-hidden"
+                >
+                Sign Up
+            </Link>}
           </div>
         </div>
       </div>

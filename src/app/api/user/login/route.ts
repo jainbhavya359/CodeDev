@@ -3,6 +3,7 @@ import User from '@/models/userModel';
 import { NextRequest, NextResponse } from 'next/server';
 import bcryptjs from 'bcryptjs';
 import jwt from "jsonwebtoken";
+import { useUserStore } from '@/store/useCodeEditorStore';
 
 connect();
 
@@ -42,6 +43,6 @@ export async function POST(request: NextRequest) {
 
         return response;
     }catch(error: any){
-        return NextResponse.json({error: error.message}, {status: 500});
+        return NextResponse.json({error: error}, {status: 500});
     }
 }

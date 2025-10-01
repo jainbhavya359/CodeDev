@@ -5,6 +5,7 @@ import React, {useActionState, useEffect, useState} from "react";
 import {toast} from "react-hot-toast";
 import {useRouter} from "next/navigation";
 import User from "@/models/userModel";
+import { useUserStore } from "@/store/useCodeEditorStore";
 
 export default function ProfilePage() {
     const router = useRouter()
@@ -12,10 +13,12 @@ export default function ProfilePage() {
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [isVerified, setIsVerified] = useState(false);
+    const { clearUserId } = useUserStore();
 
     const logout = async () => {
         try {
             await axios.get('/api/user/logout')
+            clearUserId;
             toast.success('Logout successful')
             router.push('/login')
         } catch (error:any) {
