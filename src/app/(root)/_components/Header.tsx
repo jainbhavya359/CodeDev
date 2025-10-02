@@ -1,6 +1,6 @@
 'use client'
 
-import React, { use, useEffect, useState } from 'react'
+import React, { use, useEffect, useRef, useState } from 'react'
 import User from '@/models/userModel'
 import Link from "next/link";
 import { Blocks, Code2, Sparkles } from "lucide-react";
@@ -9,14 +9,20 @@ import toast from 'react-hot-toast';
 import ThemeSelector from './ThemeSelector';
 import LanguageSelector from './LanguageSelector';
 import RunButton from './RunButton';
-import { useUserStore } from '@/store/useCodeEditorStore';
+import { HomeDimensions, useUserStore } from '@/store/useCodeEditorStore';
 import SubmitButton from './SubmitButton';
 
 export default function Header() {
     const [ user, setUser ] = useState<any>(null);
     const { userId, setUserId } = useUserStore();
+    const { setHeight } = HomeDimensions();
+    const headerRef = useRef<HTMLDivElement>(null);
 
     useEffect(()=>{
+        if (headerRef.current) {
+          setHeight(headerRef.current.offsetHeight + 50);
+        }
+
         axios.get('/api/user/me')
         .then(res =>{
           setUser(res.data.data);
@@ -29,7 +35,7 @@ export default function Header() {
     },[user,userId]);
 
   return (
-    <div className="relative z-10">
+    <div className="relative z-10" ref={headerRef}>
       <div
         className="flex items-center lg:justify-between justify-center 
         bg-[#0a0a0f]/80 backdrop-blur-xl p-6 mb-4 rounded-lg"

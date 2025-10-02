@@ -181,4 +181,27 @@ export const useUserStore = create<UserState>()(
   )
 );
 
+interface Dimensions {
+  height: number;
+  setHeight: (h: number) => void;
+  editorHeight: number;
+  setEditorHeight: (h: number) => void;
+  width: number;
+  setWidth: (w: number) => void;
+}
+
+export const HomeDimensions = create<Dimensions>()(
+  persist(
+    (set) => ({
+      height: 0,
+      setHeight: (h) => set({height: h}),
+      editorHeight: 500,
+      setEditorHeight: (h) => set({editorHeight: h}),
+      width: 600,
+      setWidth: (w) => set({width: w})
+    }),
+    {name: "user-storage"}
+  )
+)
+
 

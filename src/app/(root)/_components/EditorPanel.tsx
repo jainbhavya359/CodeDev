@@ -43,7 +43,7 @@ function EditorPanel() {
   if (!mounted) return null;
 
   return (
-    <div className="relative">
+    <div className="relative box-content">
       <div className="relative bg-[#12121a]/90 backdrop-blur rounded-xl border border-white/[0.05] p-6">
         {/* Header */}
         <div className="flex items-center justify-between mb-4">
@@ -104,7 +104,7 @@ function EditorPanel() {
                 minimap: { enabled: false },
                 fontSize,
                 automaticLayout: true,
-                scrollBeyondLastLine: false,
+                scrollBeyondLastLine: true,
                 padding: { top: 16, bottom: 16 },
                 renderWhitespace: "selection",
                 fontFamily: '"Fira Code", "Cascadia Code", Consolas, monospace',

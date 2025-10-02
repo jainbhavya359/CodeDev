@@ -1,19 +1,18 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
-import EditorPanel from "./EditorPanel";
 import SplitLayout from "./SplitLayout";
+import { HomeDimensions } from "@/store/useCodeEditorStore";
+import DescriptionPanel from "./DescriptionPanel";
 
 export default function SplitLayoutHorizontal() {
-  const [width, setWidth] = useState(900);
-  const minWidth = 300;
-  const maxWidth =
-    typeof window !== "undefined" ? window.innerWidth - 200 : 800;
-
+  const minWidth = 250;
   const isDragging = useRef(false);
+  const { height, width, setWidth } = HomeDimensions(); 
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       if (isDragging.current) {
+        const maxWidth = window.innerWidth - 300; // prevent right collapse
         const newWidth = Math.min(Math.max(e.clientX, minWidth), maxWidth);
         setWidth(newWidth);
       }
@@ -22,42 +21,43 @@ export default function SplitLayoutHorizontal() {
     const handleMouseUp = () => {
       isDragging.current = false;
       document.body.style.cursor = "default";
-      document.body.style.userSelect = "auto"; 
+      document.body.style.userSelect = "auto";
     };
 
     document.addEventListener("mousemove", handleMouseMove);
     document.addEventListener("mouseup", handleMouseUp);
-
     return () => {
       document.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("mouseup", handleMouseUp);
     };
-  }, [maxWidth]);
+  }, []);
 
   const startDragging = () => {
     isDragging.current = true;
     document.body.style.cursor = "col-resize";
-    document.body.style.userSelect = "none"; 
+    document.body.style.userSelect = "none";
   };
 
   return (
-    <div className="flex flex-col xl:flex-row h-screen">
-      {/* Editor Panel */}
+    <div
+      className="flex flex-row w-full"
+      style={{ height: `calc(100vh - ${height}px)` }} 
+    >
+      
       <div
-        className="p-4 overflow-auto min-w-md max-h-screen"
-        style={{ width: `${width}px` }}
+        className="overflow-auto h-full"
+        style={{ width: `${width}px`, minWidth: `${minWidth}px` }}
       >
-        <EditorPanel />
+        <DescriptionPanel />
       </div>
 
       {/* Divider */}
       <div
         onMouseDown={startDragging}
-        className="w-[5px] cursor-col-resize "
+        className="w-[5px] cursor-col-resize bg-gray-700 opacity-50"
       />
 
-      {/* Output Panel */}
-      <div className="flex-1 p-4 overflow-auto min-w-md max-h-screen">
+      <div className="flex-1 h-full overflow-hidden">
         <SplitLayout />
       </div>
     </div>

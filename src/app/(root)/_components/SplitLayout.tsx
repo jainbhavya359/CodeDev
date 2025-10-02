@@ -2,25 +2,27 @@
 import { useState, useEffect, useRef } from "react";
 import EditorPanel from "./EditorPanel";
 import OutputPanel from "./OutputPanel";
+import { HomeDimensions } from "@/store/useCodeEditorStore";
 
 export default function SplitLayout() {
-  const [height, setHeight] = useState(
-    typeof window !== "undefined" ? window.innerHeight / 2 : 400
-  );
-
-  const minEditorHeight = 100;
-  const minOutputHeight = 150;
+  const { editorHeight, setEditorHeight} = HomeDimensions();
+  const minEditorHeight = 120;
+  const minConsoleHeight = 120;
   const isDragging = useRef(false);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
-      if (isDragging.current) {
-        const containerHeight = window.innerHeight;
+      if (isDragging.current && containerRef.current) {
+        const rect = containerRef.current.getBoundingClientRect();
+        const containerHeight = rect.height;
+        const offsetY = e.clientY - rect.top;
+
         const newHeight = Math.min(
-          Math.max(e.clientY, minEditorHeight),
-          containerHeight - minOutputHeight
+          Math.max(offsetY, minEditorHeight),
+          containerHeight - minConsoleHeight
         );
-        setHeight(newHeight);
+        setEditorHeight(newHeight);
       }
     };
 
@@ -32,7 +34,6 @@ export default function SplitLayout() {
 
     document.addEventListener("mousemove", handleMouseMove);
     document.addEventListener("mouseup", handleMouseUp);
-
     return () => {
       document.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("mouseup", handleMouseUp);
@@ -46,11 +47,11 @@ export default function SplitLayout() {
   };
 
   return (
-    <div className="flex flex-col h-screen">
-      {/* Editor Panel */}
+    <div ref={containerRef} className="flex flex-col h-full">
+      {/* Editor */}
       <div
-        className="p-4 overflow-auto min-h-1/5 max-h-4/5"
-        style={{ height: `${height}px` }}
+        className="overflow-auto"
+        style={{ height: `${editorHeight}px`, minHeight: `${minEditorHeight}px` }}
       >
         <EditorPanel />
       </div>
@@ -58,11 +59,13 @@ export default function SplitLayout() {
       {/* Divider */}
       <div
         onMouseDown={startDragging}
-        className="h-[7px] cursor-row-resize bg-gray-600"
+        className="h-[5px] cursor-row-resize bg-gray-600 opacity-50"
       />
 
-      {/* Output Panel */}
-      <div className="flex-1 p-4 overflow-auto min-h-1/5 max-h-4/5">
+      <div
+        className="flex-1 overflow-auto"
+        style={{ minHeight: `${minConsoleHeight}px` }}
+      >
         <OutputPanel />
       </div>
     </div>

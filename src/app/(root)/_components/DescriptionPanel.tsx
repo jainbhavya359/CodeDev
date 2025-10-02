@@ -1,15 +1,18 @@
 "use client";
 
-import { useCodeEditorStore } from "@/store/useCodeEditorStore";
+import { HomeDimensions, useCodeEditorStore } from "@/store/useCodeEditorStore";
 import { AlertTriangle, CheckCircle, Clock, Copy, Terminal } from "lucide-react";
 import { useState } from "react";
 import RunningCodeSkeleton from "./RunningCodeSkeleton";
 
-function OutputPanel() {
+function DescriptionPanel() {
   const { output, error, isRunning } = useCodeEditorStore();
   const [isCopied, setIsCopied] = useState(false);
 
   const hasContent = error || output;
+
+  const { height } = HomeDimensions();
+  const panelHeight = window.innerHeight - height - 70;
 
   const handleCopy = async () => {
     if (!hasContent) return;
@@ -27,7 +30,7 @@ function OutputPanel() {
           <div className="flex items-center justify-center w-6 h-6 rounded-lg bg-[#1e1e2e] ring-1 ring-gray-800/50">
             <Terminal className="w-4 h-4 text-blue-400" />
           </div>
-          <span className="text-sm font-medium text-gray-300">Output</span>
+          <span className="text-sm font-medium text-gray-300">Description</span>
         </div>
 
         {hasContent && (
@@ -55,7 +58,8 @@ function OutputPanel() {
       <div className="relative">
         <div
           className="relative bg-[#1e1e2e]/50 backdrop-blur-sm border border-[#313244] 
-        rounded-xl p-4 h-[600px] font-mono text-sm"
+        rounded-xl p-4 h-[600px] font-mono text-sm overflow-hidden"
+        style={{height: `${panelHeight}px`}}
         >
           {isRunning ? (
             <RunningCodeSkeleton />
@@ -80,7 +84,7 @@ function OutputPanel() {
               <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-gray-800/50 ring-1 ring-gray-700/50 mb-4">
                 <Clock className="w-6 h-6" />
               </div>
-              <p className="text-center">Run your code to see the output here...</p>
+              <p className="text-center">Browse questions to start your journey..</p>
             </div>
           )}
         </div>
@@ -89,4 +93,4 @@ function OutputPanel() {
   );
 }
 
-export default OutputPanel;
+export default DescriptionPanel;
