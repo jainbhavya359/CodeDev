@@ -10,6 +10,7 @@ import ThemeSelector from './ThemeSelector';
 import LanguageSelector from './LanguageSelector';
 import RunButton from './RunButton';
 import { useUserStore } from '@/store/useCodeEditorStore';
+import SubmitButton from './SubmitButton';
 
 export default function Header() {
     const [ user, setUser ] = useState<any>(null);
@@ -103,6 +104,7 @@ export default function Header() {
           )}
 
             <RunButton />
+            <SubmitButton />
 
           <div className="pl-3 border-l border-gray-800">
              {user ? <Link
@@ -110,7 +112,7 @@ export default function Header() {
               className="relative group flex items-center gap-2 px-4 py-1.5 rounded-lg text-gray-300 bg-gray-800/50 
                 hover:bg-blue-500/10 border border-gray-800 hover:border-blue-500/50 transition-all duration-300 shadow-lg overflow-hidden"
             >
-              ProfileBtn
+              Profile
             </Link> : <Link
                 href="/signup"
                 className="relative group flex items-center gap-2 px-4 py-1.5 rounded-lg text-gray-300 bg-gray-800/50 

@@ -19,6 +19,10 @@ const codeSchema = new Schema({
     userId: {
         type: String,
         required: [true, "SignUp before proceeding"],
+    },
+    time: {
+        type: Date,
+        default: Date.now
     }
 });
 

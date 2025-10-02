@@ -6,18 +6,33 @@ import { motion } from "framer-motion";
 import { output } from "framer-motion/client";
 import { Loader2, Play } from "lucide-react";
 
-function RunButton() {
+function SubmitButton() {
   const { runCode, language, isRunning } = useCodeEditorStore();
   const { userId } = useUserStore()
 
-  const handleRun = async () => {
+  const handleSubmit = async () => {
     await runCode();
     const result = getExecutionResult();
+    
+
+    if(result && userId){
+        try {
+            await axios.post("/api/saveCode", { 
+                language,
+                code: result.code,
+                output: result.output || undefined,
+                error: result.error || undefined,
+                userId,
+            });
+        } catch (error: any) {
+            console.log("error:" + error.message);
+        }
+    }
   };
 
   return (
     <motion.button
-      onClick={handleRun}
+      onClick={handleSubmit}
       disabled={isRunning}
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
@@ -45,7 +60,7 @@ function RunButton() {
               <Play className="w-4 h-4 text-white/90 transition-transform group-hover:scale-110 group-hover:text-white" />
             </div>
             <span className="text-sm font-medium text-white/90 group-hover:text-white">
-              Run Code
+              Submit Code
             </span>
           </>
         )}
@@ -53,4 +68,4 @@ function RunButton() {
     </motion.button>
   );
 }
-export default RunButton;
+export default SubmitButton;

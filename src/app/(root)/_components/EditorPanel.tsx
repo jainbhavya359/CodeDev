@@ -91,7 +91,7 @@ function EditorPanel() {
         </div>
 
         {/* Editor  */}
-        <div className="relative group rounded-xl overflow-hidden ring-1 ring-white/[0.05]">
+        <div className="relative group rounded-xl mb-1 ring-1 ring-white/[0.05]">
           {(
             <Editor
               height="600px"
