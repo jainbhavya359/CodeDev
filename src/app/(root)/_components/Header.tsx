@@ -35,10 +35,10 @@ export default function Header() {
     },[user,userId]);
 
   return (
-    <div className="relative z-10" ref={headerRef}>
+    <div className="relative z-11 flex-1" ref={headerRef}>
       <div
         className="flex items-center lg:justify-between justify-center 
-        bg-[#0a0a0f]/80 backdrop-blur-xl p-6 mb-4 rounded-lg"
+        bg-[#0a0a0f]/80 backdrop-blur-xl p-3 mb-2 rounded-lg"
       >
         <div className="hidden lg:flex items-center gap-8">
           <Link href="/" className="flex items-center gap-3 group relative">

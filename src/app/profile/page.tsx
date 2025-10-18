@@ -6,9 +6,8 @@ import {toast} from "react-hot-toast";
 import {useRouter} from "next/navigation";
 import User from "@/models/userModel";
 import { motion } from "framer-motion";
-import { useUserStore } from "@/store/useCodeEditorStore";
 import { CheckCircle, LogOut, XCircle } from "lucide-react";
-import Home from "../(root)/page";
+import { useUserStore } from "@/store/useCodeEditorStore";
 
 export default function ProfilePage() {
     const router = useRouter()

@@ -5,7 +5,7 @@ import bcryptjs from 'bcryptjs';
 import jwt from "jsonwebtoken";
 import { useUserStore } from '@/store/useCodeEditorStore';
 
-connect();
+connect();      
 
 export async function POST(request: NextRequest) {
     try{

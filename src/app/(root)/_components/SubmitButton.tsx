@@ -3,17 +3,24 @@
 import { getExecutionResult, useCodeEditorStore, useUserStore } from "@/store/useCodeEditorStore";
 import axios from "axios";
 import { motion } from "framer-motion";
-import { output } from "framer-motion/client";
 import { Loader2, Play } from "lucide-react";
+import { useEffect, useState } from "react";
 
 function SubmitButton() {
   const { runCode, language, isRunning } = useCodeEditorStore();
-  const { userId } = useUserStore()
+  const [ isClicked, setIsClicked ] = useState(false);
+  const { userId } = useUserStore();
+
+  useEffect(() => {
+    if(!isRunning){
+      setIsClicked(false);
+    }
+  })
 
   const handleSubmit = async () => {
+    setIsClicked(true)
     await runCode();
     const result = getExecutionResult();
-    
 
     if(result && userId){
         try {
@@ -46,7 +53,7 @@ function SubmitButton() {
       <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-blue-500 rounded-xl opacity-100 transition-opacity group-hover:opacity-90" />
 
       <div className="relative flex items-center gap-2.5">
-        {isRunning ? (
+        {isClicked ? (
           <>
             <div className="relative">
               <Loader2 className="w-4 h-4 animate-spin text-white/70" />

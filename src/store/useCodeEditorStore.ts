@@ -5,6 +5,9 @@ import * as monaco from "monaco-editor";
 import User from "@/models/userModel";
 import { Model } from "mongoose";
 import { persist } from "zustand/middleware";
+import question from '@/store/questions.json';
+
+const input = question.testCases.input[1];
 
 const getInitialState = () => {
   // if we're on the server, return default values
@@ -27,6 +30,7 @@ const getInitialState = () => {
     fontSize: Number(savedFontSize),
   };
 };
+
 
 export const useCodeEditorStore = create<CodeEditorState>((set, get) => {
   const initialState = getInitialState();
@@ -96,6 +100,7 @@ export const useCodeEditorStore = create<CodeEditorState>((set, get) => {
             language: runtime.language,
             version: runtime.version,
             files: [{ content: code }],
+            stdin: input,
           }),
         });
 
@@ -137,17 +142,36 @@ export const useCodeEditorStore = create<CodeEditorState>((set, get) => {
         }
 
         // if we get here, execution was successful
-        const output = data.run.output;
+        function normalizeOutput(str: string) {
+          return str
+            .replace(/\r\n/g, "\n")          // normalize newlines
+            .replace(/\r/g, "\n")
+            .replace(/[ \t]+(\n|$)/g, "\n")  // remove trailing spaces before newline or end
+            .replace(/[ \t]+$/g, "")         // remove trailing spaces at end
+            .replace(/\u200B|\ufeff/g, "")   // remove invisible chars
+            .trim();                         // Remove leading/trailing whitespace
+        }
+
+        const runOutput = normalizeOutput(data.run.output || data.run.stdout || "");
+        const expectedOutput = normalizeOutput(question.testCases.output[1] || "");
+
+        let error = null;
+
+        if (runOutput !== expectedOutput) {
+          error = "Wrong Answer";
+        }
 
         set({
-          output: output.trim(),
-          error: null,
+          output: runOutput,
+          error: error,
           executionResult: {
             code,
-            output: output.trim(),
-            error: null,
+            output: runOutput,
+            error: error,
           },
         });
+
+
       } catch (error) {
         console.log("Error running code:", error);
         set({
@@ -162,24 +186,6 @@ export const useCodeEditorStore = create<CodeEditorState>((set, get) => {
 });
 
 export const getExecutionResult = () => useCodeEditorStore.getState().executionResult;
-
-
-interface UserState {
-  userId: string | null;
-  setUserId: (id: string) => void;
-  clearUserId: () => void;
-}
-
-export const useUserStore = create<UserState>()(
-  persist(
-    (set) => ({
-      userId: null,
-      setUserId: (id) => set({ userId: id }),
-      clearUserId: () => set({ userId: null }),
-    }),
-    { name: "user-storage" } // stored in localStorage
-  )
-);
 
 interface Dimensions {
   height: number;
@@ -203,5 +209,26 @@ export const HomeDimensions = create<Dimensions>()(
     {name: "user-storage"}
   )
 )
+
+interface UserState {
+  userId: string | null;
+  setUserId: (id: string) => void;
+  clearUserId: () => void;
+  currentQuestion: number;
+  setCurrentQuestion: (q: number) => void;
+}
+
+export const useUserStore = create<UserState>()(
+  persist(
+    (set) => ({
+      userId: null,
+      setUserId: (id) => set({ userId: id }),
+      clearUserId: () => set({ userId: null }),
+      currentQuestion: 1,
+      setCurrentQuestion: (q) => set({ currentQuestion: q}),
+    }),
+    { name: "user-storage" } // stored in localStorage
+  )
+);
 
 

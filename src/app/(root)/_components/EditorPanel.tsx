@@ -3,7 +3,7 @@ import { useCodeEditorStore } from "@/store/useCodeEditorStore";
 import { useEffect, useState } from "react";
 import { defineMonacoThemes, LANGUAGE_CONFIG } from "../_constants";
 import { Editor } from "@monaco-editor/react";
-import { motion } from "framer-motion";
+import { motion, vw } from "framer-motion";
 import Image from "next/image";
 import { RotateCcwIcon, ShareIcon, TypeIcon } from "lucide-react";
 import useMounted from "@/hooks/useMounted";
@@ -44,22 +44,22 @@ function EditorPanel() {
 
   return (
     <div className="relative box-content">
-      <div className="relative bg-[#12121a]/90 backdrop-blur rounded-xl border border-white/[0.05] p-6">
+      <div className="relative bg-[#12121a]/90 backdrop-blur rounded-xl border border-white/[0.05] p-3">
         {/* Header */}
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-3">
-            <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-[#1e1e2e] ring-1 ring-white/5">
-              <Image src={"/" + language + ".png"} alt="Logo" width={24} height={24} />
+            <div className="flex items-center justify-center rounded-lg bg-[#1e1e2e] ring-1 ring-white/5">
+              <Image src={"/" + language + ".png"} alt="Logo" width={15} height={15} />
             </div>
             <div>
-              <h2 className="text-sm font-medium text-white">Code Editor</h2>
+              <h2 className="text-xs font-medium text-white">Code Editor</h2>
               <p className="text-xs text-gray-500">Write and execute your code</p>
             </div>
           </div>
           <div className="flex items-center gap-3">
             {/* Font Size Slider */}
-            <div className="flex items-center gap-3 px-3 py-2 bg-[#1e1e2e] rounded-lg ring-1 ring-white/5">
-              <TypeIcon className="size-4 text-gray-400" />
+            <div className="flex items-center gap-3 px-2 py-1 rounded-lg">
+              <TypeIcon className="size-3 text-gray-400" />
               <div className="flex items-center gap-3">
                 <input
                   type="range"

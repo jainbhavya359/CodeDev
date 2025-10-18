@@ -50,7 +50,7 @@ export default function SplitLayout() {
     <div ref={containerRef} className="flex flex-col h-full">
       {/* Editor */}
       <div
-        className="overflow-auto"
+        className="z-10"
         style={{ height: `${editorHeight}px`, minHeight: `${minEditorHeight}px` }}
       >
         <EditorPanel />
@@ -59,11 +59,11 @@ export default function SplitLayout() {
       {/* Divider */}
       <div
         onMouseDown={startDragging}
-        className="h-[5px] cursor-row-resize bg-gray-600 opacity-50"
+        className="h-[5px] cursor-row-resize bg-gray-600 opacity-50 z-10"
       />
 
       <div
-        className="flex-1 overflow-auto"
+        className="flex-1 overflow-auto z-11"
         style={{ minHeight: `${minConsoleHeight}px` }}
       >
         <OutputPanel />

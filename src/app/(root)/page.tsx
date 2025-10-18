@@ -4,8 +4,8 @@ import SplitLayoutHorizontal from "./_components/SplitLayoutHorizontal";
 
 export default function Home() {
   return (
-    <div className="min-h-screen">
-      <div className="max-w-[1800px] mx-auto p-4">
+    <div className="flex flex-col min-h-screen">
+      <div className="flex-1 p-4 overflow-hidden">
         <Header />
         <SplitLayoutHorizontal />
       </div>

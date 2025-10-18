@@ -1,0 +1,7 @@
+{
+    "question": ["Write a code to print sum of two numbers","Sort arrays"],
+    "testCases": {
+        "input": ["2 3", "2\n3 1 2 4 5\n8 49 4 5 1"],
+        "output": ["5","1 2 3 4 5\n1 4 5 8 49"]
+    }
+}
