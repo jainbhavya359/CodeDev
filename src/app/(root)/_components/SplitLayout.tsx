@@ -9,8 +9,8 @@ export default function SplitLayout() {
   const containerRef = useRef<HTMLDivElement>(null);
   const isDragging = useRef(false);
 
-  const minEditorHeight = 120;
-  const minOutputHeight = 100;
+  const minEditorHeight = 300;
+  const minOutputHeight = 150;
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -76,7 +76,7 @@ export default function SplitLayout() {
 
       {/* Output */}
       {/* flex-1 tells container to grow and take remaining space available */}
-      <div className="flex flex-col flex-1 min-h-0 overflow-hidden z-11">
+      <div className="flex flex-col flex-1 overflow-hidden z-11">
         <div className="flex-1 overflow-auto">
           <OutputPanel />
         </div>

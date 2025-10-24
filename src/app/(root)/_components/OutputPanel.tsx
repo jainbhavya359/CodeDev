@@ -50,7 +50,7 @@ function OutputPanel() {
       </div>
 
       {/* Output Content */}
-      <div className="flex flex-col flex-1 relative bg-[#1e1e2e]/60 border border-[#313244] rounded-xl p-4 font-mono text-sm overflow-auto">
+      <div className="flex flex-col flex-1 relative bg-[#1e1e2e]/60 border border-[#313244] rounded-xl p-4 font-mono text-sm overflow-hidden">
         {isRunning ? (
           <RunningCodeSkeleton />
         ) : error ? (
