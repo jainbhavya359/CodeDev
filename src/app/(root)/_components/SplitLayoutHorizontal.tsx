@@ -14,6 +14,7 @@
         if (isDragging.current) {
           const maxWidth = window.innerWidth - 300; // prevent right collapse
           const newWidth = Math.min(Math.max(e.clientX, minWidth), maxWidth);
+          // selectes width from range [minW, MouseX, maxW]
           setWidth(newWidth);
         }
       };
@@ -36,6 +37,7 @@
       isDragging.current = true;
       document.body.style.cursor = "col-resize";
       document.body.style.userSelect = "none";
+      // Preventing Selecting during overflow
     };
 
     return (

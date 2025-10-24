@@ -51,13 +51,9 @@ function DescriptionPanel() {
 
       <div className="flex-1 relative bg-[#1e1e2e]/50 backdrop-blur-sm border border-[#313244] 
         rounded-xl p-4 font-mono text-sm overflow-auto">
-        {isRunning ? (
-          <RunningCodeSkeleton />
-        ) : (
-          <pre className="whitespace-pre-wrap text-gray-300">
-            {"No questions yet"}
-          </pre>
-        )}
+        <pre className="whitespace-pre-wrap text-gray-300">
+          {"No questions yet"}
+        </pre>
       </div>
     </div>
   );
